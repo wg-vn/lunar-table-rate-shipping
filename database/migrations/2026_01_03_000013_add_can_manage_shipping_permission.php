@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
-use Lunar\Admin\Support\Facades\LunarPanel;
 use Lunar\Core\Database\Migration;
 use Spatie\Permission\Models\Permission;
 
@@ -9,11 +8,8 @@ return new class extends Migration
 {
     public function up()
     {
-        try {
-            $guard = LunarPanel::getPanel()->getAuthGuard();
-        } catch (Throwable $e) {
-            return;
-        }
+        // The staff guard both Lunar panels authorise against (`lunar.staff.guard`).
+        $guard = config('lunar.staff.guard', 'staff');
 
         $tableNames = config('permission.table_names');
 

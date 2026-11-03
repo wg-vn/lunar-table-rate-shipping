@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Lunar\Core\Models\Base;
-use Lunar\Shipping\Factories\ShippingExclusionFactory;
+use Lunar\Shipping\Database\Factories\ShippingExclusionFactory;
 
 class ShippingExclusion extends Base
 {
