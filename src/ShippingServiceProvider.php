@@ -10,6 +10,8 @@ use Lunar\Core\Models\CustomerGroup;
 use Lunar\Core\Models\Order;
 use Lunar\Core\Models\Product;
 use Lunar\Core\Modifiers\ShippingModifiers;
+use Lunar\Panel\Facades\Panel;
+use Lunar\Panel\PanelManager;
 use Lunar\Shipping\DiscountTypes\ShippingDiscount;
 use Lunar\Shipping\Interfaces\ShippingMethodManagerInterface;
 use Lunar\Shipping\Managers\PostcodeManager;
@@ -21,6 +23,8 @@ use Lunar\Shipping\Models\ShippingRate;
 use Lunar\Shipping\Models\ShippingZone;
 use Lunar\Shipping\Models\ShippingZonePostcode;
 use Lunar\Shipping\Observers\OrderObserver;
+use Lunar\Shipping\Panel\ShippingDiscountForm;
+use Lunar\Shipping\Panel\ShippingSection;
 use Lunar\Shipping\Resolvers\PostcodeResolver;
 
 class ShippingServiceProvider extends ServiceProvider
@@ -44,18 +48,19 @@ class ShippingServiceProvider extends ServiceProvider
         }
 
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'lunarpanel.shipping');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'lunar-shipping');
 
         if (! config('lunar.database.disable_migrations', false)) {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
-
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'shipping');
 
         $shippingModifiers->add(
             ShippingModifier::class,
         );
 
         Discounts::addType(ShippingDiscount::class);
+
+        $this->registerPanel();
 
         Order::observe(OrderObserver::class);
 
@@ -97,5 +102,23 @@ class ShippingServiceProvider extends ServiceProvider
             'shipping_zone' => ShippingZone::class,
             'shipping_zone_postcode' => ShippingZonePostcode::class,
         ]);
+    }
+
+    /**
+     * The shipping screens in Lunar's Inertia panel, their compiled Vue bundle (`build/`, published or
+     * linked to `public/vendor/lunar-panel/lunar-shipping`) and the shipping discount's form.
+     */
+    protected function registerPanel(): void
+    {
+        Panel::section(new ShippingSection);
+
+        $this->app->make(PanelManager::class)
+            ->vite('lunar-shipping', [
+                'input' => 'resources/js/addon.ts',
+                'hotFile' => null,
+                'buildDirectory' => 'vendor/lunar-panel/lunar-shipping',
+                '__buildSourcePath' => dirname(__DIR__).'/build',
+            ])
+            ->discountTypeForm(ShippingDiscount::class, ShippingDiscountForm::class);
     }
 }
