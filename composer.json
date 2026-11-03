@@ -40,8 +40,8 @@
     },
     "require": {
         "php": "^8.4",
-        "lunarphp/core": "2.0.0-alpha.6",
-        "lunarphp/panel": "2.0.0-alpha.6"
+        "lunarphp/core": ">=2.0.0-alpha.6 <2.0.0-alpha.7",
+        "lunarphp/panel": ">=2.0.0-alpha.6 <2.0.0-alpha.7"
     },
     "replace": {
         "lunarphp/table-rate-shipping": "self.version"

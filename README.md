@@ -13,7 +13,7 @@ discount type), see the [Lunar documentation](https://docs.lunarphp.com/).
 
 | | Upstream `lunarphp/table-rate-shipping` 2.x | `wg-vn/lunar-table-rate-shipping` |
 | --- | --- | --- |
-| Requires | `lunarphp/admin`, `filament/filament` ^5 | `lunarphp/core` and `lunarphp/panel` (same exact version) |
+| Requires | `lunarphp/admin`, `filament/filament` ^5 | `lunarphp/core` and `lunarphp/panel`, `2.0.0-alpha.6` line |
 | Admin screens | Filament resources (`ShippingPlugin`) | Settings > Shipping in the Inertia panel: zones (coverage, exclusion lists, rates and price breaks), methods (driver, weight limits, weekly schedule, customer groups), exclusion lists |
 | Shipping discount form | Filament schema on `ShippingDiscount` | `ShippingDiscountForm`, the panel's `DiscountTypeForm` |
 | `shipping:manage` permission guard | read from the Filament panel (skipped without it) | `lunar.staff.guard` |
@@ -34,13 +34,6 @@ development `php artisan lunar:panel:link` symlinks `build/` instead. The add-on
 `LUNAR_SHIPPING_TABLES_ENABLED=false`.
 
 Staff need the `shipping:manage` permission (or Lunar's admin flag) to see Settings > Shipping.
-
-## Versioning
-
-A release is the upstream version it is based on plus a fork counter, as in `wg-vn/lunar-core`:
-`v2.0.0-alpha.6.1`, `v2.0.0-alpha.6.2`, … are this fork's releases on upstream `2.0.0-alpha.6`, and the
-first release on upstream `2.0.0-alpha.7` is `v2.0.0-alpha.7.1`. Upstream's own tags (`2.0.0-alpha.6`,
-without the `v`) arrive with `git fetch upstream --tags` and are never pushed here.
 
 ## Development
 
@@ -80,3 +73,15 @@ git -C ../lunar diff 2.0.0-alpha.6 2.0.0-alpha.7 -- tests/shipping \
 Then match `lunarphp/core` and `lunarphp/panel` in `composer.json` to the new release, read upstream's
 changelog for migrations that changed in place, run the tests, and rebuild `build/` if the panel's npm
 packages (`@lunarphp/panel`, `@lunarphp/panel-vite-plugin`) changed.
+
+## Releasing
+
+Versions follow upstream's with one more segment, as in `wg-vn/lunar-core`: the first release built on
+upstream `2.0.0-alpha.6` is `v2.0.0-alpha.6.1`, the next one `v2.0.0-alpha.6.2`, and the first after
+merging upstream `2.0.0-alpha.7` is `v2.0.0-alpha.7.1`.
+
+1. Add a `## [x.y.z...]` section to `CHANGELOG.md`.
+2. Tag and push that tag only: `git tag v2.0.0-alpha.6.2 && git push origin v2.0.0-alpha.6.2`.
+   Never `git push --tags`: the local clone holds upstream's tags (`2.0.0-alpha.6`, without the `v`).
+3. The `Publish to Packagist` workflow asks Packagist to re-read the repository and creates a GitHub
+   Release from the changelog section.
