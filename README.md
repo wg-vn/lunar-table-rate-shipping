@@ -23,7 +23,7 @@ discount type), see the [Lunar documentation](https://docs.lunarphp.com/).
 ## Installation
 
 ```bash
-composer require wg-vn/lunar-table-rate-shipping
+composer require wg-vn/lunar-table-rate-shipping:^2.0@alpha
 php artisan migrate
 php artisan vendor:publish --tag=lunar-shipping-panel-assets --force
 ```
@@ -34,6 +34,13 @@ development `php artisan lunar:panel:link` symlinks `build/` instead. The add-on
 `LUNAR_SHIPPING_TABLES_ENABLED=false`.
 
 Staff need the `shipping:manage` permission (or Lunar's admin flag) to see Settings > Shipping.
+
+## Versioning
+
+A release is the upstream version it is based on plus a fork counter, as in `wg-vn/lunar-core`:
+`v2.0.0-alpha.6.1`, `v2.0.0-alpha.6.2`, … are this fork's releases on upstream `2.0.0-alpha.6`, and the
+first release on upstream `2.0.0-alpha.7` is `v2.0.0-alpha.7.1`. Upstream's own tags (`2.0.0-alpha.6`,
+without the `v`) arrive with `git fetch upstream --tags` and are never pushed here.
 
 ## Development
 
