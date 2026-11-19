@@ -83,5 +83,5 @@ merging upstream `2.0.0-alpha.7` is `v2.0.0-alpha.7.1`.
 1. Add a `## [x.y.z...]` section to `CHANGELOG.md`.
 2. Tag and push that tag only: `git tag v2.0.0-alpha.6.2 && git push origin v2.0.0-alpha.6.2`.
    Never `git push --tags`: the local clone holds upstream's tags (`2.0.0-alpha.6`, without the `v`).
-3. The `Publish to Packagist` workflow asks Packagist to re-read the repository and creates a GitHub
+3. Packagist picks up the tag through its GitHub webhook, and the `Release` workflow creates a GitHub
    Release from the changelog section.
